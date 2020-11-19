@@ -4,6 +4,7 @@ import admin from "firebase-admin";
 import fetch from "node-fetch";
 import { format } from "date-fns";
 import qs from "querystring";
+import { NowRequest, NowResponse } from "@vercel/node";
 
 admin.initializeApp({
   credential: admin.credential.cert(
@@ -13,7 +14,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-module.exports = async () => {
+module.exports = async (req: NowRequest, res: NowResponse) => {
   const end = new Date();
   const start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
 
@@ -32,11 +33,5 @@ module.exports = async () => {
   }/sendMessage?chat_id=${process.env.CHAT_ID}&text=${qs.escape(text)}`;
   await fetch(url);
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ result: "ok" }),
-  };
+  res.status(200).send("ok");
 };
