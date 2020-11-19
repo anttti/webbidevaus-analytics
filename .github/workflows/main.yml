@@ -1,0 +1,11 @@
+name: Run Analytics
+
+on:
+  schedule:
+    - cron: '0 19 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: wget https://webbidevaus-analytics.vercel.app/api/generate-report
